@@ -7,7 +7,7 @@ using BrokenVector.LowPolyFencePack;
 namespace TestTask.Core{    
     public class CoinCollect : MonoBehaviour {
 
-        List<GameObject> coinCollection = new List<GameObject>();
+        List<CoinDrop> coinCollection = new List<CoinDrop>();
         Transform player;
 
         [Header("Attach the door controller script of the game")]
@@ -18,7 +18,7 @@ namespace TestTask.Core{
             CoinDrop.OnCoinDrop+=OnCoinDrop;
             player = GameObject.FindGameObjectWithTag("Player").transform;
         }
-       private void OnCoinDrop(GameObject coin){
+       private void OnCoinDrop(CoinDrop coin){
            coinCollection.Add(coin);
             if(!GameHandler.instance.EnemyExits())
                 CollectAchievement();
@@ -42,9 +42,9 @@ namespace TestTask.Core{
         ///</summary>
         private void CollectCoins(){
             GameHandler.instance.IncreaseXP(coinCollection.Count);
-             foreach(GameObject coin in coinCollection){
+             foreach(var coin in coinCollection){
                 coin.transform.DOMove(player.position,0.2f);
-                Destroy(coin,0.55f);
+                coin.Remove();
                 doorController.OpenDoor();
             }
             ///Once the animation is done clear the list for next round

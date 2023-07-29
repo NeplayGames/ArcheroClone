@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TestTask.Helper;
 
 using TestTask.Attribute;
+using ArcheroClone.pool;
 
 namespace TestTask.Core
 {
@@ -41,20 +42,27 @@ namespace TestTask.Core
         [SerializeField] TextMesh levelTextMesh;
 
         bool gameOver = false;
-        
-
+        [Header("Coin that is drop by enemy")]
+        [SerializeField] CoinDrop coinDrop;
+        private PoolMain poolMain;
         public bool isPause = false;
         public enum Tags
         {
             Enemy, Player
         }
-
+        public IPool<CoinDrop> CoinPool
+        {
+            get;
+            private set;
+        }
          void Awake()
         {
             if (instance != null)
                 Destroy(this.gameObject);
             instance = this;
             playerInitialPosition = player.position;
+            poolMain = new PoolMain();
+            CoinPool = poolMain.CreatePool<CoinDrop>(coinDrop);
             //Suscribe to the event
             levelSystem.OnLevelUpdate += LevelSystem_OnLevelUpdate;
         }

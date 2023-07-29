@@ -1,6 +1,7 @@
 /Assembly-CSharp.csproj
 /Library
 /Logs
+/TestTask_Data
 /Temp
 TestTask.sln
 UnityEditor.UI.csproj

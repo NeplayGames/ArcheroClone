@@ -1,3 +1,4 @@
+using ArcheroClone.pool;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,11 +7,21 @@ namespace TestTask.Core
 {
     public class CoinDrop : MonoBehaviour
     {
-        public static event Action<GameObject> OnCoinDrop;
-        private void Awake()
+        public static event Action<CoinDrop> OnCoinDrop;
+          private void Awake()
         {
             if (OnCoinDrop != null)
-                OnCoinDrop(this.gameObject);
+                OnCoinDrop(this);
+        }
+
+        internal void Remove()
+        {
+            Invoke(nameof( RemoveCoin), .55f);
+        }
+
+        private void RemoveCoin()
+        {
+            GameHandler.instance.CoinPool.Return(this);
         }
     }
 }

@@ -9,16 +9,8 @@ namespace TestTask.Movement
 {
 
     public abstract class Enemy : Attributes
-    {
-
-        [Header("Reward object for player after player death.")]
-        [SerializeField] GameObject coins;
-        //Time to remain stationary before another flight
+    {     
         float stationaryTime;
-
-        float walkingTime;
-
-
         protected Transform player;
         protected new void Awake()
         {
@@ -46,9 +38,12 @@ namespace TestTask.Movement
 
         {
             for (int i = 0; i < Random.Range(2, 5); i++)
+            {
                 //Randomly instantiate the coins near player
-                Instantiate(coins, transform.position + transform.forward * Random.Range(-1, 1f) 
-                + transform.right * Random.Range(-1, 1f), coins.transform.rotation);
+                CoinDrop coin = GameHandler.instance.CoinPool.Request();
+                Instantiate(coin.gameObject, transform.position + transform.forward * Random.Range(-1, 1f)
+                + transform.right * Random.Range(-1, 1f), coin.transform.rotation);
+            }            
         }
 
         private void Update()
